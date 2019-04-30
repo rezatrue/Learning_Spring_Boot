@@ -35,12 +35,13 @@ public class ReservationControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 
-	private static final DateFormat DATE_FROMAT = new SimpleDateFormat("yyyy-MM-dd");
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Test
 	public void getReservations() throws Exception {
 	
-		Date date = DATE_FROMAT.parse("2017-01-01");
+		String dateString = "2017-01-01";
+		Date date = DATE_FORMAT.parse(dateString);
         List<RoomReservation> mockReservationList = new ArrayList<>();
         RoomReservation mockRoomReservation = new RoomReservation();
         mockRoomReservation.setLastName("Test");
@@ -52,9 +53,9 @@ public class ReservationControllerTest {
         mockRoomReservation.setRoomName("JUnit Room");
         mockReservationList.add(mockRoomReservation);
 		
-        given(reservationService.getRoomReservationsForDate(date)).willReturn(mockReservationList);
+        given(reservationService.getRoomReservationsForDate(dateString)).willReturn(mockReservationList);
 		
-		this.mockMvc.perform(get("/reservations?date=2017-01-01")).andExpect(status().isOk()).andExpect(content().string(containsString("Test, JUnit")));
+		this.mockMvc.perform(get("/reservations?date=" + dateString)).andExpect(status().isOk()).andExpect(content().string(containsString("Test, JUnit")));
 	}
 	
 	
